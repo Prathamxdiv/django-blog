@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ action }} Post{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <div class="card p-4 shadow-sm">
+          <h3 class="mb-4">{{ action }} Post</h3>
+
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Title</label>
+              <input type="text" name="title"
+                     value="{{ form.instance.title }}"
+                     class="form-control" placeholder="Enter post title" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Category</label>
+              <select name="category" class="form-control">
+                <option value="">-- Select Category --</option>
+                {% for category in form.fields.category.queryset %}
+                  <option value="{{ category.id }}"
+                    {% if form.instance.category == category %}selected{% endif %}>
+                    {{ category.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Tags</label>
+              <input type="text" name="tags"
+                value="{% if form.instance.pk %}{{ form.instance.tags.all|join:', ' }}{% endif %}"
+                class="form-control" placeholder="python, django, web (comma separated)">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label fw-bold">Content</label>
+              {{ form.content }}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Cover Image</label>
+              <input type="file" name="image" class="form-control">
+              {% if form.instance.image %}
+                <small class="text-muted">Current: {{ form.instance.image }}</small>
+              {% endif %}
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Status</label>
+              <select name="status" class="form-control">
+                <option value="published" {% if form.instance.status == 'published' %}selected{% endif %}>
+                  Published
+                </option>
+                <option value="draft" {% if form.instance.status == 'draft' %}selected{% endif %}>
+                  Draft
+                </option>
+              </select>
+            </div>
+
+            {% if form.errors %}
+              <div class="alert alert-danger">{{ form.errors }}</div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary w-100">{{ action }} Post</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% block extra_js %}
+  {{ form.media }}
+{% endblock %}
+
+{% endblock %}

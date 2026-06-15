@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}About - Blogy{% endblock %}
+
+{% block content %}
+<section class="section" style="padding: 60px 0;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center">
+        <h2 class="mb-4">About Blogy</h2>
+        <p class="lead text-muted">
+          Blogy is a platform where writers share stories, ideas, and knowledge on any topic.
+        </p>
+        <p class="text-muted">
+          Built with Django and PostgreSQL — a full-featured blog platform with user authentication,
+          rich text editing, categories, tags, comments, and likes.
+        </p>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Read Posts</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
