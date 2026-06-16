@@ -33,7 +33,10 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
 ]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://web-production-63ea7.up.railway.app",
+    "http://web-production-63ea7.up.railway.app",
+]
 # Application definition
 
 INSTALLED_APPS = [
