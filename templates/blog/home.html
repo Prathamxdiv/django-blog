@@ -1,131 +1,149 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Home - Blogy{% endblock %}
 
 {% block content %}
 
-<!-- Hero Section -->
-<section id="hero" class="hero section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 80px 0; color: white;">
-  <div class="container text-center">
-    <h1 class="display-4 fw-bold">Welcome to <span style="color: #ffd700;">Blogy</span></h1>
-    <p class="lead mt-3">Discover stories, ideas, and knowledge from writers on any topic.</p>
+<!-- HERO -->
+<section style="background: var(--gradient); padding: 80px 24px; text-align: center; color: #fff;">
+  <div style="max-width: 650px; margin: 0 auto;">
+    <div style="display:inline-block; background:rgba(255,255,255,0.15); border-radius:50px; padding:6px 18px; font-size:13px; font-weight:600; margin-bottom:18px; backdrop-filter:blur(10px);">
+      ✨ Your daily dose of knowledge
+    </div>
+    <h1 style="font-size:46px; font-weight:800; color:#fff; line-height:1.2; margin-bottom:16px;">
+      Ideas worth <br><span style="opacity:0.85;">reading &amp; sharing</span>
+    </h1>
+    <p style="font-size:17px; opacity:0.88; margin-bottom:30px; line-height:1.6;">
+      Discover stories, tutorials, and insights from passionate writers on any topic.
+    </p>
     {% if not user.is_authenticated %}
-      <a href="{% url 'register' %}" class="btn btn-light btn-lg mt-3 me-2">Get Started</a>
-      <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg mt-3">Login</a>
+      <a href="{% url 'register' %}" class="btn-white me-3" style="font-size:15px; padding:12px 28px;">Start Writing Free</a>
+      <a href="{% url 'login' %}" style="color:#fff; font-size:14px; text-decoration:none; opacity:0.85;">Already have account →</a>
     {% else %}
-      <a href="{% url 'post_create' %}" class="btn btn-light btn-lg mt-3">Write a Post</a>
+      <a href="{% url 'post_create' %}" class="btn-white" style="font-size:15px; padding:12px 28px;">✍️ Write a Post</a>
     {% endif %}
   </div>
 </section>
 
-<!-- Posts Section -->
-<section id="blog-posts" class="blog-posts section">
-  <div class="container">
-    <div class="row gy-4">
+<!-- MAIN CONTENT -->
+<div class="main-wrap">
+  <div class="row g-4">
 
-      <!-- Main Posts -->
-      <div class="col-lg-8">
-        <div class="row gy-4">
-          {% for post in page_obj %}
-          <div class="col-md-6">
-            <article class="post-card">
-              {% if post.image %}
-                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid post-img">
-              {% else %}
-                <img src="{% static 'assets/img/blog/blog-post-1.webp' %}" alt="default" class="img-fluid post-img">
-              {% endif %}
-              <div class="post-content p-3">
-                {% if post.category %}
-                  <a href="{% url 'category' post.category.slug %}" class="badge bg-primary mb-2">
-                    {{ post.category.name }}
-                  </a>
-                {% endif %}
-                <h3><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h3>
-                <div class="post-meta d-flex gap-3 text-muted small mb-2">
-                  <span><i class="bi bi-person"></i> {{ post.author.username }}</span>
-                  <span><i class="bi bi-calendar"></i> {{ post.created_at|date:"M d, Y" }}</span>
-                  <span><i class="bi bi-heart"></i> {{ post.total_likes }}</span>
-                  <span><i class="bi bi-chat"></i> {{ post.comments.count }}</span>
-                </div>
-                <p class="text-muted small">{{ post.content|striptags|truncatewords:20 }}</p>
-                <a href="{% url 'post_detail' post.slug %}" class="btn btn-sm btn-outline-primary">
-                  Read More
-                </a>
+    <!-- POSTS -->
+    <div class="col-lg-8">
+      <div class="section-header">
+        <h2>Latest <span>Posts</span></h2>
+        <span style="font-size:13px; color:var(--muted);">{{ page_obj.paginator.count }} articles</span>
+      </div>
+
+      <div class="row g-4">
+        {% for post in page_obj %}
+        <div class="col-md-6">
+          <article class="post-card">
+            {% if post.image %}
+              <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-img">
+            {% else %}
+              <div style="height:200px; background:linear-gradient(135deg,#6c63ff22,#ff658422); display:flex; align-items:center; justify-content:center;">
+                <i class="bi bi-file-text" style="font-size:48px; color:var(--primary); opacity:0.4;"></i>
               </div>
-            </article>
-          </div>
-          {% empty %}
-            <p class="text-muted">No posts yet. Be the first to write!</p>
-          {% endfor %}
-        </div>
-
-        <!-- Pagination -->
-        {% if page_obj.has_other_pages %}
-        <div class="pagination-wrap d-flex justify-content-center mt-4">
-          <nav>
-            <ul class="pagination">
-              {% if page_obj.has_previous %}
-                <li class="page-item">
-                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                </li>
-              {% endif %}
-
-              {% for num in page_obj.paginator.page_range %}
-                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                  <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                </li>
-              {% endfor %}
-
-              {% if page_obj.has_next %}
-                <li class="page-item">
-                  <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                </li>
-              {% endif %}
-            </ul>
-          </nav>
-        </div>
-        {% endif %}
-
-      </div>
-
-      <!-- Sidebar -->
-      <div class="col-lg-4">
-
-        <!-- Categories -->
-        <div class="sidebar-widget mb-4 p-3 border rounded">
-          <h5 class="widget-title mb-3">Categories</h5>
-          <ul class="list-unstyled">
-            {% for category in categories %}
-              <li class="mb-2">
-                <a href="{% url 'category' category.slug %}" class="text-decoration-none">
-                  <i class="bi bi-folder me-2"></i>{{ category.name }}
+            {% endif %}
+            <div class="post-content">
+              {% if post.category %}
+                <a href="{% url 'category' post.category.slug %}" class="cat-badge">
+                  {{ post.category.name }}
                 </a>
-              </li>
-            {% empty %}
-              <li class="text-muted">No categories yet.</li>
-            {% endfor %}
-          </ul>
+              {% endif %}
+              <h3><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h3>
+              <div class="post-meta">
+                <span><i class="bi bi-person-fill"></i> {{ post.author.username }}</span>
+                <span><i class="bi bi-calendar3"></i> {{ post.created_at|date:"M d, Y" }}</span>
+                <span><i class="bi bi-heart-fill" style="color:#ff6584;"></i> {{ post.total_likes }}</span>
+                <span><i class="bi bi-chat-fill" style="color:var(--primary);"></i> {{ post.comments.count }}</span>
+              </div>
+              <p class="post-excerpt">{{ post.content|striptags|truncatewords:22 }}</p>
+              <a href="{% url 'post_detail' post.slug %}" class="btn-read-more">
+                Read More <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </article>
         </div>
-
-        <!-- Write CTA -->
-        {% if user.is_authenticated %}
-        <div class="sidebar-widget p-3 bg-primary text-white rounded text-center">
-          <h5>Share Your Story</h5>
-          <p class="small">Write a post and share your knowledge.</p>
-          <a href="{% url 'post_create' %}" class="btn btn-light btn-sm">Write Now</a>
+        {% empty %}
+        <div class="col-12">
+          <div style="text-align:center; padding:60px 20px; background:var(--card-bg); border-radius:20px; border:1px solid var(--border);">
+            <div style="font-size:56px; margin-bottom:16px;">✍️</div>
+            <h4 style="color:var(--dark); font-weight:700;">No posts yet</h4>
+            <p style="color:var(--muted); font-size:14px;">Be the first to share your story!</p>
+            {% if user.is_authenticated %}
+              <a href="{% url 'post_create' %}" class="btn-read-more mt-2">Write First Post</a>
+            {% endif %}
+          </div>
         </div>
-        {% else %}
-        <div class="sidebar-widget p-3 bg-primary text-white rounded text-center">
-          <h5>Join Blogy</h5>
-          <p class="small">Register to start writing your own posts.</p>
-          <a href="{% url 'register' %}" class="btn btn-light btn-sm">Register</a>
-        </div>
-        {% endif %}
-
+        {% endfor %}
       </div>
+
+      <!-- PAGINATION -->
+      {% if page_obj.has_other_pages %}
+      <div class="d-flex justify-content-center mt-4">
+        <ul class="pagination gap-1">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                <i class="bi bi-chevron-left"></i>
+              </a>
+            </li>
+          {% endif %}
+          {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="col-lg-4">
+
+      <!-- Categories -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">📂 Categories</div>
+        {% for category in categories %}
+          <a href="{% url 'category' category.slug %}" class="category-item">
+            <span><i class="bi bi-hash"></i> {{ category.name }}</span>
+            <i class="bi bi-chevron-right" style="font-size:11px; color:var(--muted);"></i>
+          </a>
+        {% empty %}
+          <p style="color:var(--muted); font-size:14px; margin:0;">No categories yet.</p>
+        {% endfor %}
+      </div>
+
+      <!-- CTA -->
+      {% if user.is_authenticated %}
+      <div class="sidebar-cta">
+        <div style="font-size:32px; margin-bottom:10px;">✍️</div>
+        <h5>Share Your Story</h5>
+        <p>Write a post and reach thousands of readers.</p>
+        <a href="{% url 'post_create' %}" class="btn-white">Write Now</a>
+      </div>
+      {% else %}
+      <div class="sidebar-cta">
+        <div style="font-size:32px; margin-bottom:10px;">🚀</div>
+        <h5>Join Blogy Today</h5>
+        <p>Register free and start sharing your ideas with the world.</p>
+        <a href="{% url 'register' %}" class="btn-white">Get Started Free</a>
+      </div>
+      {% endif %}
+
     </div>
   </div>
-</section>
+</div>
 
 {% endblock %}

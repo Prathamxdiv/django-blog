@@ -1,30 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{ action }} Post{% endblock %}
+{% block title %}{{ action }} Post - Blogy{% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
+<div style="background:var(--gradient); padding:40px 24px; text-align:center; color:#fff;">
+  <h2 style="color:#fff; font-weight:800; margin:0;">
+    {% if action == 'Edit' %}✏️ Edit Your Post{% else %}✍️ Write a New Post{% endif %}
+  </h2>
+  <p style="opacity:0.85; font-size:14px; margin-top:8px;">Share your knowledge with the world</p>
+</div>
 
-        <div class="card p-4 shadow-sm">
-          <h3 class="mb-4">{{ action }} Post</h3>
+<div class="main-wrap">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="form-card">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
 
-          <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+          <div class="mb-4">
+            <label class="form-label">Post Title *</label>
+            <input type="text" name="title" class="form-control"
+                   value="{{ form.instance.title }}"
+                   placeholder="Write a compelling title..." required
+                   style="font-size:18px; font-weight:600; padding:14px 16px;">
+          </div>
 
-            <div class="mb-3">
-              <label class="form-label fw-bold">Title</label>
-              <input type="text" name="title"
-                     value="{{ form.instance.title }}"
-                     class="form-control" placeholder="Enter post title" required>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold">Category</label>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label">Category</label>
               <select name="category" class="form-control">
-                <option value="">-- Select Category --</option>
+                <option value="">-- No Category --</option>
                 {% for category in form.fields.category.queryset %}
                   <option value="{{ category.id }}"
                     {% if form.instance.category == category %}selected{% endif %}>
@@ -33,54 +38,57 @@
                 {% endfor %}
               </select>
             </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold">Tags</label>
-              <input type="text" name="tags"
-                value="{% if form.instance.pk %}{{ form.instance.tags.all|join:', ' }}{% endif %}"
-                class="form-control" placeholder="python, django, web (comma separated)">
-            </div>
-            
-            <div class="mb-3">
-              <label class="form-label fw-bold">Content</label>
-              {{ form.content }}
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold">Cover Image</label>
-              <input type="file" name="image" class="form-control">
-              {% if form.instance.image %}
-                <small class="text-muted">Current: {{ form.instance.image }}</small>
-              {% endif %}
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold">Status</label>
+            <div class="col-md-6">
+              <label class="form-label">Status</label>
               <select name="status" class="form-control">
-                <option value="published" {% if form.instance.status == 'published' %}selected{% endif %}>
-                  Published
-                </option>
-                <option value="draft" {% if form.instance.status == 'draft' %}selected{% endif %}>
-                  Draft
-                </option>
+                <option value="published" {% if form.instance.status == 'published' %}selected{% endif %}>✅ Published</option>
+                <option value="draft" {% if form.instance.status == 'draft' %}selected{% endif %}>📝 Draft</option>
               </select>
             </div>
+          </div>
 
-            {% if form.errors %}
-              <div class="alert alert-danger">{{ form.errors }}</div>
+          <div class="mb-4">
+            <label class="form-label">Tags <span style="color:var(--muted); font-weight:400;">(comma separated)</span></label>
+            <input type="text" name="tags" class="form-control"
+                   value="{% if form.instance.pk %}{{ form.instance.tags.all|join:', ' }}{% endif %}"
+                   placeholder="python, django, web development">
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Content *</label>
+            <div style="border:1.5px solid var(--border); border-radius:10px; overflow:hidden;">
+              {{ form.content }}
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Cover Image</label>
+            <input type="file" name="image" class="form-control" accept="image/*">
+            {% if form.instance.image %}
+              <div style="margin-top:10px; display:flex; align-items:center; gap:10px;">
+                <img src="{{ form.instance.image.url }}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">
+                <span style="font-size:12px; color:var(--muted);">Current image — upload new to replace</span>
+              </div>
             {% endif %}
+          </div>
 
-            <button type="submit" class="btn btn-primary w-100">{{ action }} Post</button>
-          </form>
-        </div>
+          {% if form.errors %}
+            <div class="alert alert-danger mb-4">{{ form.errors }}</div>
+          {% endif %}
 
+          <div class="d-flex gap-3">
+            <button type="submit" class="btn-submit" style="flex:1;">
+              {% if action == 'Edit' %}💾 Save Changes{% else %}🚀 Publish Post{% endif %}
+            </button>
+            <a href="{% url 'home' %}" style="padding:12px 24px; border-radius:50px; border:2px solid var(--border); color:var(--muted); text-decoration:none; font-weight:600; font-size:15px; display:flex; align-items:center;">
+              Cancel
+            </a>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-{% block extra_js %}
-  {{ form.media }}
-{% endblock %}
-
+{% block extra_js %}{{ form.media }}{% endblock %}
 {% endblock %}

@@ -1,52 +1,94 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+{% block title %}{{ profile_user.username }} - Blogy{% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
 
-    <!-- Profile Header -->
-    <div class="author-box p-4 border rounded d-flex gap-4 align-items-center mb-5">
-      {% if profile_user.profile.profile_picture %}
-        <img src="{{ profile_user.profile.profile_picture.url }}"
-             class="rounded-circle" width="100" height="100" alt="Profile">
-      {% else %}
-        <img src="{% static 'assets/img/person/person-m-5.webp' %}"
-             class="rounded-circle" width="100" height="100" alt="Profile">
-      {% endif %}
-      <div>
-        <h3>{{ profile_user.username }}</h3>
-        <p class="text-muted">{{ profile_user.profile.bio|default:"No bio yet." }}</p>
-        {% if profile_user.profile.website %}
-          <a href="{{ profile_user.profile.website }}" target="_blank" class="text-primary small">
-            <i class="bi bi-globe"></i> {{ profile_user.profile.website }}
-          </a>
-        {% endif %}
-        {% if user == profile_user %}
-          <a href="{% url 'edit_profile' %}" class="btn btn-sm btn-outline-primary ms-3">
-            Edit Profile
-          </a>
-        {% endif %}
-      </div>
+<!-- PROFILE HERO -->
+<div class="profile-hero">
+  {% if profile_user.profile.profile_picture %}
+    <img src="{{ profile_user.profile.profile_picture.url }}" class="profile-avatar" alt="Profile">
+  {% else %}
+    <div style="width:100px; height:100px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:40px; font-weight:800; color:#fff; margin:0 auto 14px; border:4px solid rgba(255,255,255,0.4);">
+      {{ profile_user.username|first|upper }}
     </div>
-
-    <!-- User Posts -->
-    <h4>Posts by {{ profile_user.username }}</h4>
-    <div class="row gy-4 mt-2">
-      {% for post in posts %}
-      <div class="col-md-6">
-        <div class="card h-100 p-3">
-          <h5><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h5>
-          <p class="text-muted small">{{ post.content|striptags|truncatewords:20 }}</p>
-          <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
-        </div>
-      </div>
-      {% empty %}
-        <p class="text-muted">No posts yet.</p>
-      {% endfor %}
+  {% endif %}
+  <h2>{{ profile_user.username }}</h2>
+  <p>{{ profile_user.profile.bio|default:"Writer on Blogy" }}</p>
+  {% if profile_user.profile.website %}
+    <a href="{{ profile_user.profile.website }}" target="_blank" style="color:rgba(255,255,255,0.8); font-size:13px; margin-top:8px; display:inline-block; text-decoration:none;">
+      🌐 {{ profile_user.profile.website }}
+    </a>
+  {% endif %}
+  {% if user == profile_user %}
+    <div style="margin-top:16px;">
+      <a href="{% url 'edit_profile' %}" class="btn-white" style="font-size:13px; padding:8px 20px;">✏️ Edit Profile</a>
     </div>
+  {% endif %}
+</div>
 
+<div class="main-wrap">
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-number">{{ posts.count }}</div>
+      <div class="stat-label">Posts Written</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">
+        {% with total=0 %}
+          {% for post in posts %}{{ post.total_likes }}{% endfor %}
+        {% endwith %}
+        ❤️
+      </div>
+      <div class="stat-label">Total Likes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">
+        {% for post in posts %}{{ post.comments.count }}{% endfor %}
+        💬
+      </div>
+      <div class="stat-label">Comments</div>
+    </div>
   </div>
-</section>
+
+  <!-- POSTS -->
+  <div class="section-header">
+    <h2>Posts by <span>{{ profile_user.username }}</span></h2>
+  </div>
+
+  <div class="row g-4">
+    {% for post in posts %}
+    <div class="col-md-6 col-lg-4">
+      <article class="post-card">
+        {% if post.image %}
+          <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-img">
+        {% else %}
+          <div style="height:160px; background:var(--gradient); display:flex; align-items:center; justify-content:center; opacity:0.7;">
+            <i class="bi bi-file-text" style="font-size:40px; color:#fff;"></i>
+          </div>
+        {% endif %}
+        <div class="post-content">
+          {% if post.category %}
+            <a href="{% url 'category' post.category.slug %}" class="cat-badge">{{ post.category.name }}</a>
+          {% endif %}
+          <h3><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h3>
+          <div class="post-meta">
+            <span><i class="bi bi-calendar3"></i> {{ post.created_at|date:"M d, Y" }}</span>
+            <span><i class="bi bi-heart-fill" style="color:#ff6584;"></i> {{ post.total_likes }}</span>
+          </div>
+          <a href="{% url 'post_detail' post.slug %}" class="btn-read-more">Read <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </article>
+    </div>
+    {% empty %}
+      <div class="col-12 text-center" style="padding:40px; color:var(--muted);">
+        <div style="font-size:48px; margin-bottom:12px;">📝</div>
+        <p>No posts yet.</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
 {% endblock %}

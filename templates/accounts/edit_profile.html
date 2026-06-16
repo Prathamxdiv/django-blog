@@ -1,34 +1,45 @@
 {% extends 'base.html' %}
-{% block title %}Edit Profile{% endblock %}
+{% block title %}Edit Profile - Blogy{% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-6">
-        <div class="card p-4 shadow-sm">
-          <h3 class="mb-4">Edit Profile</h3>
-          <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label class="form-label">Bio</label>
-              <textarea name="bio" rows="4" class="form-control"
-                        placeholder="Tell us about yourself...">{{ form.instance.bio }}</textarea>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Profile Picture</label>
-              <input type="file" name="profile_picture" class="form-control">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Website</label>
-              <input type="url" name="website" class="form-control"
-                     value="{{ form.instance.website }}" placeholder="https://yourwebsite.com">
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Save Changes</button>
-          </form>
+<div style="background:var(--gradient); padding:40px 24px; text-align:center; color:#fff;">
+  <h2 style="color:#fff; font-weight:800; margin:0;">⚙️ Edit Profile</h2>
+  <p style="opacity:0.85; font-size:14px; margin-top:8px;">Update your personal information</p>
+</div>
+
+<div class="main-wrap">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="form-card">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Bio</label>
+            <textarea name="bio" rows="4" class="form-control"
+              placeholder="Tell people about yourself...">{{ form.instance.bio }}</textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Profile Picture</label>
+            <input type="file" name="profile_picture" class="form-control" accept="image/*">
+            {% if form.instance.profile_picture %}
+              <div style="margin-top:10px; display:flex; align-items:center; gap:10px;">
+                <img src="{{ form.instance.profile_picture.url }}" style="width:50px; height:50px; border-radius:50%; object-fit:cover;">
+                <span style="font-size:12px; color:var(--muted);">Current photo</span>
+              </div>
+            {% endif %}
+          </div>
+          <div class="mb-4">
+            <label class="form-label">Website URL</label>
+            <input type="url" name="website" class="form-control"
+              value="{{ form.instance.website }}" placeholder="https://yourwebsite.com">
+          </div>
+          <button type="submit" class="btn-submit">💾 Save Changes</button>
+        </form>
+        <div class="form-divider mt-3">
+          <a href="{% url 'profile' user.username %}" class="form-link">← Back to Profile</a>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 {% endblock %}

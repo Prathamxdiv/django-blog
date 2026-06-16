@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
-{% block title %}Delete Post{% endblock %}
+{% block title %}Delete Post - Blogy{% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-5 text-center">
-        <div class="card p-4 shadow-sm">
-          <h4 class="text-danger mb-3">Delete Post</h4>
-          <p>Are you sure you want to delete <strong>"{{ post.title }}"</strong>?</p>
-          <p class="text-muted small">This action cannot be undone.</p>
-          <form method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger w-100 mb-2">Yes, Delete</button>
-            <a href="{% url 'post_detail' post.slug %}" class="btn btn-outline-secondary w-100">
-              Cancel
-            </a>
-          </form>
-        </div>
-      </div>
+<div class="auth-wrap">
+  <div class="auth-box">
+    <div class="form-card" style="text-align:center;">
+      <div class="delete-icon">🗑️</div>
+      <h3 style="font-weight:800; color:var(--dark); margin-bottom:8px;">Delete Post</h3>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:6px;">You are about to permanently delete:</p>
+      <p style="font-weight:700; color:var(--dark); font-size:16px; margin-bottom:20px;">"{{ post.title }}"</p>
+      <p style="color:#dc3545; font-size:13px; margin-bottom:24px;">⚠️ This action cannot be undone.</p>
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" style="display:block; width:100%; padding:12px; background:#dc3545; color:#fff; border:none; border-radius:50px; font-size:15px; font-weight:700; cursor:pointer; margin-bottom:12px;">
+          Yes, Delete It
+        </button>
+      </form>
+      <a href="{% url 'post_detail' post.slug %}" style="display:block; width:100%; padding:12px; border:2px solid var(--border); border-radius:50px; font-size:15px; font-weight:600; color:var(--muted); text-decoration:none;">
+        Cancel
+      </a>
     </div>
   </div>
-</section>
+</div>
 {% endblock %}

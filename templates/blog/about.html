@@ -2,21 +2,92 @@
 {% block title %}About - Blogy{% endblock %}
 
 {% block content %}
-<section class="section" style="padding: 60px 0;">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 text-center">
-        <h2 class="mb-4">About Blogy</h2>
-        <p class="lead text-muted">
-          Blogy is a platform where writers share stories, ideas, and knowledge on any topic.
-        </p>
-        <p class="text-muted">
-          Built with Django and PostgreSQL — a full-featured blog platform with user authentication,
-          rich text editing, categories, tags, comments, and likes.
-        </p>
-        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Read Posts</a>
+
+<div class="about-hero">
+  <h1>About Blogy ✨</h1>
+  <p>A modern platform for writers, thinkers, and creators to share ideas with the world.</p>
+</div>
+
+<div class="main-wrap">
+
+  <!-- FEATURES -->
+  <div class="section-header" style="justify-content:center; margin-bottom:36px;">
+    <h2 style="text-align:center;">Why <span>Blogy?</span></h2>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">✍️</div>
+        <h5>Rich Text Editor</h5>
+        <p>Write beautifully formatted posts with our powerful built-in editor.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h5>Secure Auth</h5>
+        <p>Full user authentication with login, register, and password reset via email.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">🏷️</div>
+        <h5>Tags & Categories</h5>
+        <p>Organize content with categories and tags for easy discovery.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">❤️</div>
+        <h5>Likes & Comments</h5>
+        <p>Engage with the community through likes and comment threads.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h5>Full-Text Search</h5>
+        <p>Find any post instantly with our powerful search functionality.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">🗄️</div>
+        <h5>PostgreSQL Backend</h5>
+        <p>Built on PostgreSQL for reliable, scalable data management.</p>
       </div>
     </div>
   </div>
-</section>
+
+  <!-- TECH STACK -->
+  <div style="background:var(--card-bg); border-radius:20px; border:1px solid var(--border); padding:36px; text-align:center;">
+    <h4 style="font-weight:800; color:var(--dark); margin-bottom:24px;">🛠️ Tech Stack</h4>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
+      {% for tech in "Python,Django,PostgreSQL,Bootstrap 5,CKEditor,Django REST Framework"|split:"," %}
+        <span style="background:linear-gradient(135deg,#6c63ff15,#a855f715); border:1px solid rgba(108,99,255,0.2); color:var(--primary); border-radius:50px; padding:8px 20px; font-size:14px; font-weight:600;">
+          {{ tech }}
+        </span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center; margin-top:48px;">
+    {% if not user.is_authenticated %}
+      <h3 style="font-weight:800; color:var(--dark); margin-bottom:12px;">Ready to start writing?</h3>
+      <p style="color:var(--muted); margin-bottom:24px;">Join Blogy for free and share your story with the world.</p>
+      <a href="{% url 'register' %}" class="btn-read-more" style="font-size:16px; padding:14px 32px;">
+        Join Blogy Free 🚀
+      </a>
+    {% else %}
+      <h3 style="font-weight:800; color:var(--dark); margin-bottom:12px;">Start writing today!</h3>
+      <a href="{% url 'post_create' %}" class="btn-read-more" style="font-size:16px; padding:14px 32px;">
+        Write a Post ✍️
+      </a>
+    {% endif %}
+  </div>
+
+</div>
+
 {% endblock %}

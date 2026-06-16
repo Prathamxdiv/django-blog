@@ -21,23 +21,45 @@
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
 :root { 
-  --background-color: #ffffff; /* Background color for the entire website, including individual sections */
-  --default-color: #212529; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #2d465e; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #f75815; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-  --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
-  --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+  /* Deep Purple + Gold Theme */
+  --primary-color: #1e1b4b;   /* deep purple */
+  --secondary-color: #2d2a6e; /* slightly lighter purple */
+  --accent-color: #4f46e5; /* indigo */
+  --accent2-color: #06b6d4; /* teal */
+  --background-color: #f7f9ff; /* bright canvas */
+
+  --default-color: #243041;   /* primary text */
+  --heading-color: #0f2a43;   /* headings */
+  --surface-color: #ffffff;  /* surfaces */
+  --contrast-color: #ffffff; /* contrast on accent */
+
+
+  /* Nav + buttons continue to rely on these variables */
+  --nav-color: var(--primary-color);
+
+  /* Keep navbar dropdown surfaces aligned with theme */
+  --nav-mobile-background-color: color-mix(in srgb, var(--primary-color) 92%, white 8%);
+  --nav-dropdown-background-color: var(--surface-color);
+  --nav-dropdown-color: var(--primary-color);
+  --nav-dropdown-hover-color: var(--accent2-color);
 }
+
+
+
+
+
+
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
-  --nav-color: #000000;  /* The default color of the main navmenu links */
-  --nav-hover-color: #f75815; /* Applied to main navmenu links when they are hovered over or active */
-  --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
-  --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #212529; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #f75815; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-color: #2b2a2a; /* default nav */
+  --nav-hover-color: var(--accent-color);
+  --nav-mobile-background-color: #fffaf2;
+  --nav-dropdown-background-color: #ffffff;
+  --nav-dropdown-color: #2b2a2a;
+  --nav-dropdown-hover-color: var(--accent-color);
 }
+
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
 
@@ -66,13 +88,28 @@ body {
   color: var(--default-color);
   background-color: var(--background-color);
   font-family: var(--default-font);
+  background-image: radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--accent2-color), transparent 85%), transparent 35%),
+                    radial-gradient(circle at 90% 10%, color-mix(in srgb, var(--accent-color), transparent 88%), transparent 40%);
+
 }
+
 
 a {
   color: var(--accent-color);
   text-decoration: none;
   transition: 0.3s;
 }
+
+.btn-primary {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+.btn-primary:hover {
+  background: color-mix(in srgb, var(--accent-color), black 10%) !important;
+  border-color: color-mix(in srgb, var(--accent-color), black 10%) !important;
+}
+
 
 a:hover {
   color: color-mix(in srgb, var(--accent-color), transparent 25%);
@@ -327,11 +364,16 @@ h6 {
 }
 
 .header .nav-wrap {
-  background-color: color-mix(in srgb, var(--default-color), transparent 96%);
+  background: color-mix(in srgb, var(--surface-color), transparent 15%);
   margin-top: 10px;
   display: flex;
   justify-content: center;
+  border-radius: 16px;
+  box-shadow: 0 10px 26px rgba(15, 42, 67, 0.10);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  backdrop-filter: blur(10px);
 }
+
 
 .header .mobile-nav-toggle {
   position: fixed;
@@ -360,19 +402,22 @@ h6 {
     position: relative;
   }
 
-  .navmenu a,
+.navmenu a,
   .navmenu a:focus {
-    color: var(--nav-color);
+    color: color-mix(in srgb, var(--heading-color), white 18%);
     padding: 18px 15px;
     font-size: 16px;
     font-family: var(--nav-font);
-    font-weight: 400;
+    font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: space-between;
     white-space: nowrap;
-    transition: 0.3s;
+    transition: 0.25s;
+    border-radius: 12px;
+    position: relative;
   }
+
 
   .navmenu a i,
   .navmenu a:focus i {
@@ -922,11 +967,371 @@ section,
 }
 
 /*--------------------------------------------------------------
+# SaaS-Style Hero Section (Home)
+--------------------------------------------------------------*/
+:root {
+  --hero-grad-1: #4f46e5;
+  --hero-grad-2: #06b6d4;
+  --hero-grad-3: #111827;
+}
+
+.hero-saas.section {
+  color: var(--contrast-color);
+  padding: 72px 0 44px 0;
+  background:
+    radial-gradient(900px 420px at 15% 10%, color-mix(in srgb, var(--hero-grad-2) 80%, transparent) 0%, transparent 60%),
+    radial-gradient(740px 360px at 85% 30%, color-mix(in srgb, var(--hero-grad-1) 75%, transparent) 0%, transparent 55%),
+    linear-gradient(135deg, color-mix(in srgb, var(--hero-grad-1) 85%, black 15%) 0%, #0b1220 55%, var(--hero-grad-3) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-saas.section::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.16), transparent 45%);
+  pointer-events: none;
+}
+
+.hero-saas__content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-saas__badge {
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.92);
+}
+
+.hero-saas__badge-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--hero-grad-2), var(--hero-grad-1));
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.18);
+  display: inline-block;
+}
+
+.hero-saas__title {
+  font-family: var(--heading-font);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
+  margin: 18px 0 12px 0;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, var(--hero-grad-2), #a78bfa, var(--hero-grad-1));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-saas__subtitle {
+  font-size: 1.08rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.78);
+  margin: 0;
+  max-width: 48ch;
+}
+
+.hero-saas__cta .hero-saas__btn {
+  border-radius: 14px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.22);
+  transform: translateY(0);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-saas__cta .hero-saas__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(79, 70, 229, 0.35);
+}
+
+.hero-saas__link {
+  color: rgba(255,255,255,0.85) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  transition: color 0.2s ease;
+}
+
+.hero-saas__link:hover {
+  color: #ffffff !important;
+}
+
+.hero-saas__icon {
+  font-size: 1.35rem;
+  margin-top: 2px;
+}
+
+.hero-saas__feature-title {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.hero-saas__feature-text {
+  color: rgba(255,255,255,0.74);
+  line-height: 1.45;
+}
+
+.hero-saas__visual {
+  position: relative;
+  z-index: 2;
+  min-height: 320px;
+}
+
+.hero-saas__card {
+  border-radius: 18px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 28px 70px rgba(0,0,0,0.35);
+  overflow: hidden;
+  transition: transform 0.35s ease, border-color 0.35s ease;
+}
+
+.hero-saas__card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,255,255,0.26);
+}
+
+.hero-saas__card-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 18px 18px 12px 18px;
+}
+
+.hero-saas__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.hero-saas__pill--muted {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.78);
+}
+
+.hero-saas__card-body {
+  padding: 6px 18px 18px 18px;
+}
+
+.hero-saas__visual-title {
+  font-family: var(--heading-font);
+  font-size: 1.6rem;
+  margin: 4px 0 8px 0;
+  color: rgba(255,255,255,0.96);
+}
+
+.hero-saas__visual-text {
+  margin: 0 0 16px 0;
+  color: rgba(255,255,255,0.74);
+  line-height: 1.55;
+}
+
+.hero-saas__mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.hero-saas__mini {
+  height: 110px;
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(79,70,229,0.32), rgba(6,182,212,0.18)),
+    rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-saas__mini::after {
+  content: "";
+  position: absolute;
+  inset: -30% -30%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 45%);
+  transform: rotate(10deg);
+  opacity: 0.9;
+}
+
+.hero-saas__mini--2 { height: 110px; }
+.hero-saas__mini--3 {
+  grid-column: 1 / -1;
+  height: 92px;
+}
+
+.hero-saas__bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(20px);
+  opacity: 0.35;
+  z-index: 1;
+  animation: heroOrbFloat 8s ease-in-out infinite;
+}
+
+.hero-saas__bg-orb--1 {
+  width: 240px;
+  height: 240px;
+  right: -90px;
+  top: -30px;
+  background: radial-gradient(circle, rgba(6,182,212,0.8), transparent 60%);
+}
+
+.hero-saas__bg-orb--2 {
+  width: 340px;
+  height: 340px;
+  left: -150px;
+  bottom: -150px;
+  background: radial-gradient(circle, rgba(79,70,229,0.75), transparent 60%);
+  animation-delay: -2s;
+}
+
+@keyframes heroOrbFloat {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-12px) translateX(8px); }
+}
+
+@media (max-width: 991px) {
+  .hero-saas__visual { min-height: 280px; }
+  .hero-saas.section { padding-top: 56px; }
+}
+
+@media (max-width: 767px) {
+  .hero-saas__mini-grid { grid-template-columns: 1fr; }
+  .hero-saas__mini--3 { grid-column: auto; }
+  .hero-saas__subtitle { font-size: 1rem; }
+}
+
+/*--------------------------------------------------------------
+# Featured Articles (SaaS style)
+--------------------------------------------------------------*/
+.featured-articles-saas {
+  padding-top: 10px;
+  background: linear-gradient(180deg, rgba(247,249,255,0) 0%, rgba(247,249,255,1) 40%);
+}
+
+.hero-section-title h2 {
+  font-size: clamp(1.5rem, 2.3vw, 2.1rem);
+}
+
+.featured-article-card {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+  box-shadow: 0 14px 40px rgba(15, 42, 67, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.featured-article-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 65px rgba(15, 42, 67, 0.16);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 60%);
+}
+
+.featured-article-card__media {
+  position: relative;
+  height: 190px;
+}
+
+.featured-article-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.featured-article-card:hover .featured-article-card__media img {
+  transform: scale(1.06);
+}
+
+.featured-article-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(17,24,39,0.0) 25%, rgba(17,24,39,0.68) 100%);
+  opacity: 0.85;
+  transition: opacity 0.25s ease;
+}
+
+.featured-article-card:hover .featured-article-card__overlay {
+  opacity: 1;
+}
+
+.featured-article-card__content {
+  padding: 18px 18px 16px 18px;
+}
+
+.featured-article-card__category {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-color), transparent 88%);
+  color: var(--accent-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.featured-article-card__title {
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  color: var(--heading-color);
+}
+
+.featured-article-card__excerpt {
+  margin: 0 0 14px 0;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  line-height: 1.55;
+}
+
+.featured-article-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--default-color), transparent 35%);
+}
+
+.featured-article-card__meta i {
+  margin-right: 6px;
+}
+
+@media (max-width: 991px) {
+  .featured-article-card__media { height: 170px; }
+}
+
+@media (max-width: 767px) {
+  .featured-article-card__media { height: 175px; }
+  .featured-article-card__title { font-size: 1.1rem; }
+}
+
+/*--------------------------------------------------------------
 # Blog Hero Section
 --------------------------------------------------------------*/
 .blog-hero {
   padding-top: 20px;
 }
+
 
 .blog-hero .blog-grid {
   display: grid;

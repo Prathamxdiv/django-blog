@@ -109,13 +109,16 @@ def like_post_view(request, slug):
         like.delete()  # unlike if already liked
     return redirect('post_detail', slug=slug)
 
-
 def category_view(request, slug):
     category = get_object_or_404(Category, slug=slug)
     posts = Post.objects.filter(category=category, status='published').order_by('-created_at')
-    paginator = Paginator(posts, 6)
-    page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, 'blog/category.html', {'category': category, 'page_obj': page_obj})
+    categories = Category.objects.all()
+    context = {
+        'category': category,
+        'posts': posts,
+        'categories': categories,
+    }
+    return render(request, 'blog/category.html', context)
 
 
 def search_view(request):

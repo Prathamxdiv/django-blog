@@ -1,23 +1,46 @@
 {% extends 'base.html' %}
-{% block title %}{{ category.name }} - Posts{% endblock %}
+{% block title %}{{ category.name }} - Blogy{% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <h3>Category: <strong>{{ category.name }}</strong></h3>
-    <div class="row gy-4 mt-3">
-      {% for post in posts %}
-      <div class="col-md-6">
-        <div class="card h-100 p-3">
-          <h5><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h5>
-          <p class="text-muted small">{{ post.content|striptags|truncatewords:20 }}</p>
-          <small class="text-muted">By {{ post.author.username }} · {{ post.created_at|date:"M d, Y" }}</small>
+<div style="background:var(--gradient); padding:50px 24px; text-align:center; color:#fff;">
+  <div style="display:inline-block; background:rgba(255,255,255,0.2); border-radius:50px; padding:5px 16px; font-size:12px; font-weight:600; margin-bottom:12px;">Category</div>
+  <h2 style="color:#fff; font-size:34px; font-weight:800; margin-bottom:8px;">{{ category.name }}</h2>
+  <p style="opacity:0.85; font-size:14px; margin:0;">{{ posts.count }} article{{ posts.count|pluralize }} in this category</p>
+</div>
+
+<div class="main-wrap">
+  <div class="row g-4">
+    {% for post in posts %}
+    <div class="col-md-6 col-lg-4">
+      <article class="post-card">
+        {% if post.image %}
+          <img src="{{ post.image.url }}" class="post-img" alt="{{ post.title }}">
+        {% else %}
+          <div style="height:160px; background:var(--gradient); display:flex; align-items:center; justify-content:center; opacity:0.6;">
+            <i class="bi bi-file-text" style="font-size:40px; color:#fff;"></i>
+          </div>
+        {% endif %}
+        <div class="post-content">
+          <span class="cat-badge">{{ category.name }}</span>
+          <h3><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h3>
+          <div class="post-meta">
+            <span><i class="bi bi-person-fill"></i> {{ post.author.username }}</span>
+            <span><i class="bi bi-calendar3"></i> {{ post.created_at|date:"M d, Y" }}</span>
+            <span><i class="bi bi-heart-fill" style="color:#ff6584;"></i> {{ post.total_likes }}</span>
+          </div>
+          <p class="post-excerpt">{{ post.content|striptags|truncatewords:18 }}</p>
+          <a href="{% url 'post_detail' post.slug %}" class="btn-read-more">Read <i class="bi bi-arrow-right"></i></a>
         </div>
-      </div>
-      {% empty %}
-        <p class="text-muted">No posts in this category yet.</p>
-      {% endfor %}
+      </article>
     </div>
+    {% empty %}
+    <div class="col-12" style="text-align:center; padding:60px 20px;">
+      <div style="font-size:56px; margin-bottom:16px;">📂</div>
+      <h4 style="color:var(--dark);">No posts yet in {{ category.name }}</h4>
+      <a href="{% url 'home' %}" class="btn-read-more mt-2">← Back to Home</a>
+    </div>
+    {% endfor %}
   </div>
-</section>
+</div>
+
 {% endblock %}
