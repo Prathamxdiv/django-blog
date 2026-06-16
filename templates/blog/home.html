@@ -60,7 +60,7 @@
                 <span><i class="bi bi-heart-fill" style="color:#ff6584;"></i> {{ post.total_likes }}</span>
                 <span><i class="bi bi-chat-fill" style="color:var(--primary);"></i> {{ post.comments.count }}</span>
               </div>
-              <p class="post-excerpt">{{ post.content|striptags|truncatewords:22 }}</p>
+              <p class="post-excerpt">{{ post.content|striptags|safe|truncatewords:22 }}</p>
               <a href="{% url 'post_detail' post.slug %}" class="btn-read-more">
                 Read More <i class="bi bi-arrow-right"></i>
               </a>
