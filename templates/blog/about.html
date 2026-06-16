@@ -61,17 +61,38 @@
   </div>
 
   <!-- TECH STACK -->
-  <div style="background:var(--card-bg); border-radius:20px; border:1px solid var(--border); padding:36px; text-align:center;">
-    <h4 style="font-weight:800; color:var(--dark); margin-bottom:24px;">🛠️ Tech Stack</h4>
-    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
-      {% for tech in "Python,Django,PostgreSQL,Bootstrap 5,CKEditor,Django REST Framework"|split:"," %}
-        <span style="background:linear-gradient(135deg,#6c63ff15,#a855f715); border:1px solid rgba(108,99,255,0.2); color:var(--primary); border-radius:50px; padding:8px 20px; font-size:14px; font-weight:600;">
-          {{ tech }}
-        </span>
-      {% endfor %}
-    </div>
-  </div>
+  <!-- TECH STACK -->
+<div style="background:var(--card-bg); border-radius:20px; border:1px solid var(--border); padding:36px; text-align:center;">
+  <h4 style="font-weight:800; color:var(--dark); margin-bottom:24px;">🛠️ Tech Stack</h4>
 
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
+
+    <span style="background:linear-gradient(135deg,#6c63ff15,#a855f715); border:1px solid rgba(108,99,255,0.2); color:var(--primary); border-radius:50px; padding:8px 20px; font-size:14px; font-weight:600;">
+      Python
+    </span>
+
+    <span style="background:linear-gradient(135deg,#6c63ff15,#a855f715); border:1px solid rgba(108,99,255,0.2); color:var(--primary); border-radius:50px; padding:8px 20px; font-size:14px; font-weight:600;">
+      Django
+    </span>
+
+    <span style="background:linear-gradient(135deg,#6c63ff15,#a855f715); border:1px solid rgba(108,99,255,0.2); color:var(--primary); border-radius:50px; padding:8px 20px; font-size:14px; font-weight:600;">
+      PostgreSQL
+    </span>
+
+    <span style="background:linear-gradient(135deg,#6c63ff15,#a855f715); border:1px solid rgba(108,99,255,0.2); color:var(--primary); border-radius:50px; padding:8px 20px; font-size:14px; font-weight:600;">
+      Bootstrap 5
+    </span>
+
+    <span style="background:linear-gradient(135deg,#6c63ff15,#a855f715); border:1px solid rgba(108,99,255,0.2); color:var(--primary); border-radius:50px; padding:8px 20px; font-size:14px; font-weight:600;">
+      CKEditor
+    </span>
+
+    <span style="background:linear-gradient(135deg,#6c63ff15,#a855f715); border:1px solid rgba(108,99,255,0.2); color:var(--primary); border-radius:50px; padding:8px 20px; font-size:14px; font-weight:600;">
+      Django REST Framework
+    </span>
+
+  </div>
+</div>
   <!-- CTA -->
   <div style="text-align:center; margin-top:48px;">
     {% if not user.is_authenticated %}
